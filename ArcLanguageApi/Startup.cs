@@ -35,7 +35,7 @@ namespace ARCLanguageApi
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ARCLanguageAPÝ", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "ARCLanguageApi", Version = "v1" });
             });
             services.AddDbContext<ARCLanguageContext>(options => options.UseSqlServer(Configuration.GetConnectionString("ARCLanguageString")));
             services.AddCors();
@@ -54,7 +54,7 @@ namespace ARCLanguageApi
             {
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
-                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ARCLanguageAPÝ v1"));
+                app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "ARCLanguageApi v1"));
             }
 
             app.UseExceptionHandler(appError =>
