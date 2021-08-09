@@ -21,6 +21,8 @@ namespace ARCLanguageApi
 {
     public class Startup
     {
+        const string APP_SETTINGS_SECTION = "Data";
+        const string APP_SETTINGS_ORIGINS = "AllowOrigins";
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -44,8 +46,11 @@ namespace ARCLanguageApi
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            var section = Configuration.GetSection($"{APP_SETTINGS_SECTION}:{APP_SETTINGS_ORIGINS}");
+            var origins = section.Get<string[]>();
+
             app.UseCors(builder =>
-               builder.WithOrigins("http://localhost:3000", "http://localhost:3001")
+               builder.WithOrigins(origins)
                .AllowAnyMethod()
                    .AllowAnyHeader()
            );
