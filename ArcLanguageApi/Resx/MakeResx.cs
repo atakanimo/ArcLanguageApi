@@ -15,12 +15,14 @@ namespace ARCLanguageApi.Resx
         {
             var Data = _arcContext.ARCLanguages.ToList();
 
-            using (ResXResourceWriter resxdef = new ResXResourceWriter("Resource.def.resx"))
-            using (ResXResourceWriter resxTr = new ResXResourceWriter("Resource.tr.resx"))
-            using (ResXResourceWriter resxEn = new ResXResourceWriter("Resource.en.resx"))
-            using (ResXResourceWriter resxDe = new ResXResourceWriter("Resource.de.resx"))
-            using (ResXResourceWriter resxRu = new ResXResourceWriter("Resource.ru.resx"))
-            using (ResXResourceWriter resxRo = new ResXResourceWriter("Resource.ro.resx"))
+            string filepathFormat = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory(), "ResourceFiles", "{0}");
+
+            using (ResXResourceWriter resxdef = new ResXResourceWriter(string.Format(filepathFormat, "Resource.def.resx")))
+            using (ResXResourceWriter resxTr = new ResXResourceWriter( string.Format(filepathFormat, "Resource.tr.resx")))
+            using (ResXResourceWriter resxEn = new ResXResourceWriter( string.Format(filepathFormat, "Resource.en.resx")))
+            using (ResXResourceWriter resxDe = new ResXResourceWriter( string.Format(filepathFormat, "Resource.de.resx")))
+            using (ResXResourceWriter resxRu = new ResXResourceWriter( string.Format(filepathFormat, "Resource.ru.resx")))
+            using (ResXResourceWriter resxRo = new ResXResourceWriter( string.Format(filepathFormat, "Resource.ro.resx")))
             {
                 foreach (var allData in Data)
                 {
@@ -38,12 +40,13 @@ namespace ARCLanguageApi.Resx
                         resxRo.AddResource(allData.KEY_NAME, allData.KEY_VALUE_RO);
                 }
             }
-            var filePath = "Resource." + $"{languages.ToLower()}.resx";
+            var fileName = $"Resource.{languages.ToLower()}.resx";
+            var filePath = string.Format(filepathFormat, fileName);
             return new ResxClass
             {
                 ByteData = System.IO.File.ReadAllBytes(filePath),
                 Type = "application/octet-stream",
-                FileName = "Resource." + $"{languages.ToLower()}.resx"
+                FileName = fileName
             };
         }
     }

@@ -14,11 +14,13 @@ using System.Web;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.AspNetCore.Cors;
 
 namespace ARCLanguageApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    //[EnableCors("AllowAll")]
     public class ARCLanguageApiController : ControllerBase
     {
         private readonly ARCLanguageContext _arcContext;
@@ -70,7 +72,7 @@ namespace ARCLanguageApi.Controllers
 
             return data;
         }
-        [HttpPost]
+        [HttpPost("add")]
         public async Task<ActionResult<ARCLANGUAGE>> PostArc([FromBody] ARCLANGUAGE arcLanguage) //ASYNC
         {
             bool anyKeyName = _arcContext.ARCLanguages.Where(x => x.KEY_NAME == arcLanguage.KEY_NAME).Any();
@@ -91,7 +93,7 @@ namespace ARCLanguageApi.Controllers
 
         }
 
-        [HttpPut("{id}")]
+        [HttpPost("update/{id}")]
         public async Task<IActionResult> PutArc(int id, ARCLANGUAGE arcLanguageUpdate) //ASYNC
         {
             if (id != arcLanguageUpdate.ID)
@@ -113,7 +115,7 @@ namespace ARCLanguageApi.Controllers
             return NoContent();
         }
 
-        [HttpPut("isActive/{id}")]
+        [HttpPost("isActive/{id}")]
         public async Task<IActionResult> EditArcActive(int id) //ASYNC
         {
             ARCLANGUAGE arcLanguageUpdate = new ARCLANGUAGE();
@@ -139,20 +141,20 @@ namespace ARCLanguageApi.Controllers
 
             return NoContent();
         }
-        [HttpDelete("{id}")]
-        public async Task<ActionResult<ARCLANGUAGE>> DeleteArc(int id)
-        {
-            var data = await _arcContext.ARCLanguages.FindAsync(id);
-            if (data == null)
-            {
-                return NotFound();
-            }
+        //[HttpPost("{id}")]
+        //public async Task<ActionResult<ARCLANGUAGE>> DeleteArc(int id)
+        //{
+        //    var data = await _arcContext.ARCLanguages.FindAsync(id);
+        //    if (data == null)
+        //    {
+        //        return NotFound();
+        //    }
 
-            _arcContext.ARCLanguages.Remove(data);
-            await _arcContext.SaveChangesAsync();
+        //    _arcContext.ARCLanguages.Remove(data);
+        //    await _arcContext.SaveChangesAsync();
 
-            return data;
-        }
+        //    return data;
+        //}
     }
 
 }
